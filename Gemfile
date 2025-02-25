@@ -58,7 +58,6 @@ gem 'rubocop-rails', require: false
 gem 'rubocop-rspec', require: false
 gem 'rubocop-rake', require: false
 gem 'panolint'
-gem 'rubocop-discourse'
 gem 'concurrent-ruby', '1.3.4'  
 
 group :development, :test do
