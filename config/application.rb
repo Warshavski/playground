@@ -40,7 +40,6 @@ module Playground
     config.api_only = true
 
     config.eager_load_paths.push("#{config.root}/lib")
-
     #
     # This middleware needs to precede ActiveRecord::QueryCache and
     # other middlewares that connect to the database.
