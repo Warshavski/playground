@@ -75,7 +75,7 @@ RSpec.configure do |config| # rubocop:disable Metrics/BlockLength
   config.include StubEnvHelpers
 
   config.include FactoryBot::Syntax::Methods
-
+  config.include JsonHelper, type: :request
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
