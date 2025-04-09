@@ -1,9 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe "GenresController", type: :request do
+  def json_response
+    JSON.parse(response.body)
+  end
+
   describe "GET /genres" do
     let!(:genres) { create_list(:genre, 3) }
-    subject { get genres_path, headers: { "Accept" => "application/json"} }
+    subject { get genres_path, headers: { "Accept" => "application/json" } }
 
     it "returns a successful response" do
       subject
@@ -12,16 +16,18 @@ RSpec.describe "GenresController", type: :request do
 
     it "returns all genres with their details as JSON" do
       subject
-      json_response = JSON.parse(response.body)
-      expect(json_response.size).to eq(3)
+      genres_array = json_response['genres']
+      expect(genres_array.size).to eq(3)
 
-      genres.each do |genre|
-        expect(json_response).to include(
-          a_hash_including(
+      genres_array.each_with_index do |genre_hash, index|
+        genre = genres[index]
+        expect(genre_hash).to eq(
+          {
             'id' => genre.id,
             'name' => genre.name,
-            'description' => genre.description
-          )
+            'description' => genre.description,
+            'books' => []
+          }
         )
       end
     end
@@ -29,7 +35,7 @@ RSpec.describe "GenresController", type: :request do
 
   describe "GET /genres/:id" do
     let(:genre) { create(:genre, :with_books) }
-    subject { get genre_path(genre), headers: { "Accept" => "application/json"} }
+    subject { get genre_path(genre), headers: { "Accept" => "application/json" } }
 
     it "returns a successful response" do
       subject
@@ -38,9 +44,9 @@ RSpec.describe "GenresController", type: :request do
 
     it "returns the correct genre as JSON" do
       subject
-      expect(json_response['id']).to eq(genre.id)
-      expect(json_response['name']).to eq(genre.name)
-      expect(json_response['description']).to eq(genre.description)
+      expect(json_response['genre']['id']).to eq(genre.id)
+      expect(json_response['genre']['name']).to eq(genre.name)
+      expect(json_response['genre']['description']).to eq(genre.description)
     end
   end
 end

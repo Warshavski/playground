@@ -38,7 +38,7 @@ gem 'rack-attack'
 
 # Data serialization
 # TODO : prefer to use fast_jsonapi
-gem 'active_model_serializers', '~> 0.9.4'
+gem 'active_model_serializers', '~> 0.10.0'
 
 # https://github.com/Netflix/fast_jsonapi
 # A lightning fast JSON:API serializer for Ruby Objects.
