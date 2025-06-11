@@ -6,5 +6,6 @@ class Author < ApplicationRecord
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :biography, presence: true
-  validates :born_in, comparison: { less_than: :died_in }
+  validates :born_in, presence: true 
+  validates :born_in, comparison: { less_than: :died_in }, unless: -> { died_in.blank? }
 end
