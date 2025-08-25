@@ -1,9 +1,7 @@
 module Books
   class Index
-    include Interactor
-
-    def call
-      context.books = Book.all
+    def self.call
+      Book.all
     end
   end 
 end

@@ -1,11 +1,12 @@
 module Books
   class Show
-    include Interactor
-
-    def call
-      book = ::Book.find_by(id: context.id)
-      return context.fail!(error: "Book not found") unless book
-      context.book = book
+    def self.call(id:)
+      book = ::Book.find_by(id: id)
+      if book
+        { success: true, book: book }
+      else
+        { success: false, error: "Book not found" }
+      end
     end
   end
 end

@@ -1,19 +1,14 @@
 module Books
   class Create
-    include Interactor
-
-    def call
-      contract = BookContract.new(context.params)
-      unless contract.valid?
-        context.fail!(error: contract.errors)
-        return
-      end
-
-      book = ::Book.create(context.params)
+    def self.call(params)
+      contract = BookContract.new(params)
+      return { success: false, error: contract.errors } unless contract.valid?
+      
+      book = ::Book.create(params)
       if book.persisted?
-        context.book = book
+        { success: true, book: book }
       else
-        context.fail!(error: book.errors.full_messages)
+        { success: false, error: book.errors.full_messages }
       end
     end
   end
