@@ -12,31 +12,20 @@ class BookContract
 
       case field
       when :title
-        if value.blank?
-          @errors << I18n.t(rule[:blank])
-        elsif value.length < 1
-          @errors << I18n.t(rule[:too_short])
-        elsif value.length > 80
-          @errors << I18n.t(rule[:too_long])
-        end
-
+        title_validation(value, rule)
       when :isbn10
-        if value.present? && value !~ /\A\d+\z/
-          @errors << I18n.t(rule[:not_numeric])
-        end
-
+        isbn10_validation(value, rule)
       when :isbn13
-        if value.present? && value !~ /\A\d+\z/
-          @errors << I18n.t(rule[:not_numeric])
-        end
-
-      else
-        @errors << I18n.t(rule[:blank]) if value.blank?
+        isbn13_validation(value, rule)
+      when :author_ids
+        author_ids_validation(value, rule)
+      when :published_in
+        published_in_validation(value, rule)
       end
     end
 
-    @errors.empty?
-  end
+  @errors.empty?
+end
 
   def errors
     @errors
@@ -44,10 +33,44 @@ class BookContract
 
   private
 
+  def title_validation(value, rule)
+    if value.blank?
+      @errors << I18n.t(rule[:blank])
+    elsif value.length < 1
+      @errors << I18n.t(rule[:too_short])
+    elsif value.length > 80
+      @errors << I18n.t(rule[:too_long])
+    end
+  end
+
+  def isbn10_validation(value, rule)
+    if value.present? && value !~ /\A\d+\z/
+      @errors << I18n.t(rule[:not_numeric])
+    end
+  end
+
+  def isbn13_validation(value, rule)
+    if value.present? && value !~ /\A\d+\z/
+      @errors << I18n.t(rule[:not_numeric])
+    end
+  end
+
+  def author_ids_validation(value, rule)
+    if value.blank?
+      @errors << I18n.t(rule[:blank])
+    end
+  end
+
+  def published_in_validation(value, rule)
+    if value.blank?
+      @errors << I18n.t(rule[:blank])
+    end
+  end
+
   def validation_rules
     {
       title: {
-        blank:     'errors.messages.contracts.book.title.empty_title',
+        blank:  'errors.messages.contracts.book.title.empty_title',
         too_short: 'errors.messages.contracts.book.title.short_title',
         too_long:  'errors.messages.contracts.book.title.long_title'
       },
