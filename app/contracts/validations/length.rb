@@ -1,17 +1,22 @@
 class Validations::Length
-  attr_reader :errors
-
-  def initialize
+  def initialize(min, max)
+    @min = min
+    @max = max
     @errors = []
   end
 
+  attr_reader :errors
+
   def valid?(value)
     @errors = []
-
-    if value.length < 2 || value.length > 80
-      @errors << I18n.t('errors.messages.contracts.length')
+    return true if value.blank?
+    if @min && value.length < @min
+      @errors << I18n.t("errors.messages.contracts.length_too_short", count: @min)
     end
 
+    if @max && value.length > @max
+      @errors << I18n.t("errors.messages.contracts.length_too_long", count: @max)
+    end
     @errors.empty?
   end
 end

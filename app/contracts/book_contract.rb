@@ -27,7 +27,7 @@ class BookContract
 
   def validation_rules
     {
-      title: [Validations::Presence.new, Validations::Space.new, Validations::Length.new],
+      title: [Validations::Presence.new, Validations::Space.new, Validations::Length.new(2, 80)],
       isbn10: [Validations::Presence.new, Validations::Numeric.new],
       isbn13: [Validations::Presence.new, Validations::Numeric.new],
       author_ids: [Validations::Presence.new],

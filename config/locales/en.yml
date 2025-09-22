@@ -39,7 +39,8 @@ en:
       contracts:
         presence: "cant be blank"
         space: "i hate spaces at the ends and the begining, delete them"
-        length: "min 1 character, max 80 characters"
+        length_too_short: "min  %{count}  character"
+        length_too_long: "max %{count} characters"
         numeric: "must be digits"
         date_format: "must be YYYY-MM-DD, like 2025-09-22"
       requests:
