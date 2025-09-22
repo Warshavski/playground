@@ -36,6 +36,19 @@ en:
         not_found: "Couldn't find %{model} with id = %{id}"
       routes:
         not_found: 'Requested endpoint does not exists'
+      contracts:
+        book:
+          title:
+            empty_title: 'Empty title'
+            short_title: 'Short title, min 1 character'
+            long_title: 'Long title, 80 characters max'
+          isbn:
+            isbn10_not_numeric: 'isbn13 must be digits'
+            isbn13_not_numeric: 'isbn10 must be digits'
+          author_ids: 
+            blank: 'Author is required'
+          published_in: 
+            blank: 'Publisher is required'
 
       requests:
         internal_server_error: '(ノಠ益ಠ)ノ彡┻━┻'
