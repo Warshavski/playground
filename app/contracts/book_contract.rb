@@ -7,10 +7,12 @@ class BookContract
   def valid?
     @errors = []
 
-    validation_rules.each do |field, strategy|
+    validation_rules.each do |field, strategies|
       value = @params[field]
-      unless strategy.valid?(value)
-        @errors.concat(strategy.errors)
+      Array(strategies).each do |strategy|
+        unless strategy.valid?(value)
+          @errors.concat(strategy.errors)
+        end
       end
     end
 
@@ -25,11 +27,11 @@ class BookContract
 
   def validation_rules
     {
-      title: BookStrategies::TitleValidation.new,
-      isbn10: BookStrategies::Isbn10Validation.new,
-      isbn13: BookStrategies::Isbn13Validation.new,
-      author_ids: BookStrategies::AuthorIdsValidation.new,
-      published_in: BookStrategies::PublishedInValidation.new
+      title: [Validations::Presence.new, Validations::Space.new, Validations::Length.new],
+      isbn10: [Validations::Presence.new, Validations::Numeric.new],
+      isbn13: [Validations::Presence.new, Validations::Numeric.new],
+      author_ids: [Validations::Presence.new],
+      published_in: [Validations::Presence.new, Validations::Space.new, Validations::DateFormat.new],
     }
   end
 end

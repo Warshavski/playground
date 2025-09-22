@@ -1,4 +1,4 @@
-class BookStrategies::PublishedInValidation
+class Validations::Presence
   attr_reader :errors
 
   def initialize
@@ -9,9 +9,8 @@ class BookStrategies::PublishedInValidation
     @errors = []
 
     if value.blank?
-      @errors << I18n.t('errors.messages.contracts.book.published_in.blank')
+      @errors << I18n.t('errors.messages.contracts.presence')
     end
-
     @errors.empty?
   end
 end

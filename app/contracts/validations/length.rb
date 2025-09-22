@@ -1,4 +1,4 @@
-class BookStrategies::AuthorIdsValidation
+class Validations::Length
   attr_reader :errors
 
   def initialize
@@ -8,8 +8,8 @@ class BookStrategies::AuthorIdsValidation
   def valid?(value)
     @errors = []
 
-    if value.blank?
-      @errors << I18n.t('errors.messages.contracts.book.author_ids.blank')
+    if value.length < 2 || value.length > 80
+      @errors << I18n.t('errors.messages.contracts.length')
     end
 
     @errors.empty?

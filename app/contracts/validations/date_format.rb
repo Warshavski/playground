@@ -1,4 +1,4 @@
-class BookStrategies::Isbn13Validation
+class Validations::DateFormat
   attr_reader :errors
 
   def initialize
@@ -8,7 +8,7 @@ class BookStrategies::Isbn13Validation
   def valid?(value)
     @errors = []
 
-    if value.present? && value !~ /\A\d+\z/
+    if value.is_a?(Date) || value.is_a?(Time)
       @errors << I18n.t('errors.messages.contracts.book.isbn.isbn10_not_numeric')
     end
 
