@@ -1,7 +1,8 @@
 class Validations::Space
   attr_reader :errors
 
-  def initialize
+  def initialize(opt)
+    @opt = opt
     @errors = []
   end
 

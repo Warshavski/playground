@@ -1,14 +1,15 @@
 class Validations::DateFormat
   attr_reader :errors
 
-  def initialize
+  def initialize(opt)
+    @opt = opt
     @errors = []
   end
 
   def valid?(value)
     @errors = []
 
-    if value.is_a?(Date) || value.is_a?(Time)
+    unless value.is_a?(Date) || value.is_a?(Time) || (Date.parse(value) rescue false)
       @errors << I18n.t('errors.messages.contracts.book.isbn.isbn10_not_numeric')
     end
 

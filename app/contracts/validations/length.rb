@@ -1,7 +1,7 @@
 class Validations::Length
-  def initialize(min, max)
-    @min = min
-    @max = max
+  def initialize(opts)
+    @min = opts.first
+    @max = opts.last
     @errors = []
   end
 
