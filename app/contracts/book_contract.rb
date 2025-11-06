@@ -1,5 +1,6 @@
 class BookContract
   include Validations::ValidationDsl
+  
   my_validates :title, presence: true, space: true, length: [2, 80]
   my_validates :isbn13, numeric: true, presence: true
   my_validates :isbn10, numeric: true, presence: true
@@ -13,5 +14,9 @@ class BookContract
 
   def errors
     @errors
+  end
+
+  def self.inherited(subclass)
+    subclass.validations = []
   end
 end

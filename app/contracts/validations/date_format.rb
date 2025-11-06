@@ -10,7 +10,7 @@ class Validations::DateFormat
     @errors = []
 
     unless value.is_a?(Date) || value.is_a?(Time) || (Date.parse(value) rescue false)
-      @errors << I18n.t('errors.messages.contracts.book.isbn.isbn10_not_numeric')
+      @errors << I18n.t('errors.messages.contracts.date_format')
     end
 
     @errors.empty?

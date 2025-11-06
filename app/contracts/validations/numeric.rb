@@ -10,7 +10,7 @@ class Validations::Numeric
     @errors = []
 
     if value.present? && value !~ /\A\d+\z/
-      @errors << I18n.t('errors.messages.contracts.date_format')
+      @errors << I18n.t('errors.messages.contracts.numeric')
     end
 
     @errors.empty?

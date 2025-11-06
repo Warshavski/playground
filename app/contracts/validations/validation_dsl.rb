@@ -8,10 +8,11 @@ module Validations::ValidationDsl
     space: Validations::Space,
     date_format: Validations::DateFormat
   }
-
+  
   included do
     class << self
-      attr_reader :validations
+      attr_accessor :validations
+
     end
     @validations = []
   end
