@@ -86,4 +86,36 @@ RSpec.describe BookContract do
       expect(contract.errors).to include({"author_ids"=>["cant be blank"]})
     end
   end
+
+  context 'when title has spaces' do
+    let(:params) do
+      {
+        title: ' space ',
+        isbn10: '1234567899',
+        isbn13: '1234567899999',
+        published_in: Date.today,
+        author_ids: [1, 2]
+      }
+    end
+    it 'valid is false, error for title' do
+      expect(contract.valid?).to be false
+      expect(contract.errors).to include({"title"=>["i hate spaces at the ends and the begining, delete them"]})
+    end
+  end
+
+    context 'when title length too short' do
+    let(:params) do
+      {
+        title: 'm',
+        isbn10: '1234567899',
+        isbn13: '1234567899999',
+        published_in: Date.today,
+        author_ids: [1, 2]
+      }
+    end
+    it 'valid is false, error for title length' do
+      expect(contract.valid?).to be false
+      expect(contract.errors).to include({"title"=>["min  2  character"]})
+    end
+  end
 end
