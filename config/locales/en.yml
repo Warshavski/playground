@@ -37,19 +37,12 @@ en:
       routes:
         not_found: 'Requested endpoint does not exists'
       contracts:
-        book:
-          title:
-            empty_title: 'Empty title'
-            short_title: 'Short title, min 1 character'
-            long_title: 'Long title, 80 characters max'
-          isbn:
-            isbn10_not_numeric: 'isbn13 must be digits'
-            isbn13_not_numeric: 'isbn10 must be digits'
-          author_ids: 
-            blank: 'Author is required'
-          published_in: 
-            blank: 'Publisher is required'
-
+        presence: "cant be blank"
+        space: "i hate spaces at the ends and the begining, delete them"
+        length_too_short: "min  %{count}  character"
+        length_too_long: "max %{count} characters"
+        numeric: "must be digits"
+        date_format: "must be YYYY-MM-DD, like 2025-09-22"
       requests:
         internal_server_error: '(ノಠ益ಠ)ノ彡┻━┻'
         request_timeout: '┑(ツ)┍'

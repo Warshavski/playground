@@ -1,7 +1,8 @@
-class BookStrategies::Isbn13Validation
+class Validations::Numeric
   attr_reader :errors
 
-  def initialize
+  def initialize(opt)
+    @opt = opt
     @errors = []
   end
 
@@ -9,7 +10,7 @@ class BookStrategies::Isbn13Validation
     @errors = []
 
     if value.present? && value !~ /\A\d+\z/
-      @errors << I18n.t('errors.messages.contracts.book.isbn.isbn10_not_numeric')
+      @errors << I18n.t('errors.messages.contracts.numeric')
     end
 
     @errors.empty?
