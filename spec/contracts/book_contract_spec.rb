@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe BookContract do
-  subject(:contract) { described_class.new(params) }
+  subject(:contract) { described_class.new.call(params) }
 
   context 'when all params valid' do
     let(:params) do
@@ -15,7 +15,7 @@ RSpec.describe BookContract do
     end
 
     it 'valid is true' do
-      expect(contract.valid?).to be true
+      expect(contract.errors.to_h).to be_empty
     end
   end
 
@@ -31,8 +31,7 @@ RSpec.describe BookContract do
     end
 
     it 'valid is false, error for title' do
-      expect(contract.valid?).to be false
-      expect(contract.errors).to include({"title"=>["cant be blank"]})
+      expect(contract.errors.to_h).to include({:title=>["cant be blank"]})
     end
   end
 
@@ -48,8 +47,7 @@ RSpec.describe BookContract do
     end
 
     it 'valid is false, error for isbn10' do
-      expect(contract.valid?).to be false
-      expect(contract.errors).to include({"isbn10"=>["must be digits"]})
+      expect(contract.errors.to_h).to include({:isbn10=>["must be digits"]})
     end
   end
 
@@ -65,8 +63,7 @@ RSpec.describe BookContract do
     end
 
     it 'valid is false, date format error' do
-      expect(contract.valid?).to be false
-      expect(contract.errors).to include({"published_in"=>["must be YYYY-MM-DD, like 2025-09-22"]})
+      expect(contract.errors.to_h).to include({:published_in=>["must be YYYY-MM-DD, like 2025-09-22"]})
     end
   end
 
@@ -82,8 +79,7 @@ RSpec.describe BookContract do
     end
 
     it 'valid is false, error for author_ids' do
-      expect(contract.valid?).to be false
-      expect(contract.errors).to include({"author_ids"=>["cant be blank"]})
+      expect(contract.errors.to_h).to include({:author_ids=>["cant be blank"]})
     end
   end
 
@@ -98,8 +94,7 @@ RSpec.describe BookContract do
       }
     end
     it 'valid is false, error for title' do
-      expect(contract.valid?).to be false
-      expect(contract.errors).to include({"title"=>["i hate spaces at the ends and the begining, delete them"]})
+      expect(contract.errors.to_h).to include({:title=>["i hate spaces at the ends and the begining, delete them"]})
     end
   end
 
@@ -114,8 +109,7 @@ RSpec.describe BookContract do
       }
     end
     it 'valid is false, error for title length' do
-      expect(contract.valid?).to be false
-      expect(contract.errors).to include({"title"=>["min  2  character"]})
+      expect(contract.errors.to_h).to include({:title=>["min 2 character"]})
     end
   end
 end
