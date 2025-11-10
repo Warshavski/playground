@@ -2,7 +2,7 @@ module Books
   class Create
     def self.call(params)
       contract = BookContract.new.call(params.to_h)
-      return { success: false, error: contract.errors.to_h } unless contract.success?
+      return { success: false, error: contract.errors.to_h } if contract.failure?
       
       book = ::Book.create(params)
       if book.persisted?

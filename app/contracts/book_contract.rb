@@ -1,6 +1,4 @@
-class BookContract < Dry::Validation::Contract
-  config.messages.backend = :i18n
-  config.messages.load_paths << Rails.root.join('config/locales/en.yml')
+class BookContract < ApplicationContract
 
   params do
     required(:title).filled(:string, min_size?: 2, max_size?: 80)
