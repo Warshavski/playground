@@ -59,6 +59,7 @@ gem 'rubocop-rspec', require: false
 gem 'rubocop-rake', require: false
 gem 'panolint'
 gem 'concurrent-ruby', '1.3.4'  
+gem "devise"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -85,8 +86,6 @@ group :development do
   gem 'brakeman'
   gem 'listen', '~> 3.3'
   gem 'pry-rails'
-
-  # Provide a quality report of your Ruby code.
   # https://github.com/whitesmith/rubycritic
   gem 'rubycritic', require: false
 end

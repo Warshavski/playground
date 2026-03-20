@@ -1,4 +1,5 @@
 class BooksController < ApplicationController
+  before_action :authenticate_user!, only: %i[create update destroy]
   def index
     books = Books::Index.call
     render json: books, each_serializer: BookSerializer
