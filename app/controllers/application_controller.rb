@@ -8,9 +8,16 @@ class ApplicationController < ActionController::API
   include Handlers::Response
   include Handlers::Exception
 
+  #
+  # If accessing from outside this domain, nullify the session
+  # This allows for outside API access while preventing CSRF attacks,
+  # but you'll have to authenticate your user separately
+  #
+  # protect_from_forgery with: :null_session
+
   before_action :destroy_session!, :ensure_request_format!
 
-  attr_reader :current_user
+  rescue_from Doorkeeper::Errors::InvalidToken, with: :render_invalid_token_error
 
   private
 
@@ -25,24 +32,13 @@ class ApplicationController < ActionController::API
     render_error([{ status: 404, detail: message }], :not_found)
   end
 
-  def authenticate_user!
-    @current_user = User.find_by(auth_token: bearer_token)
+  def current_user
+    return unless doorkeeper_token
 
-    return if @current_user.present?
-
-    render json: { errors: ['Unauthorized'] }, status: :unauthorized
+    @current_user ||= User.find_by(id: doorkeeper_token.resource_owner_id)
   end
 
-  def user_signed_in?
-    current_user.present?
-  end
-
-  def bearer_token
-    authorization_header = request.headers['Authorization'].to_s
-    authentication_scheme, token = authorization_header.split(' ', 2)
-
-    return nil unless authentication_scheme == 'Bearer'
-
-    token
+  def render_invalid_token_error
+    render json: { errors: ['Invalid access token'] }, status: :unauthorized
   end
 end

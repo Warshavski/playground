@@ -1,29 +1,30 @@
 class BooksController < ApplicationController
-  before_action :authenticate_user!, only: %i[create update destroy]
+  before_action :doorkeeper_authorize!, only: %i[create update destroy]
+
   def index
     books = Books::Index.call
     render json: books, each_serializer: BookSerializer
   end
 
   def show
-    result = Books::Show.call(id: params[:id]) 
+    result = Books::Show.call(id: params[:id])
     if result[:success]
       render json: result[:book], serializer: BookSerializer
     else
       render json: { errors: result[:error] }, status: :not_found
     end
   end
-  
-  def create 
+
+  def create
     result = Books::Create.call(book_params)
     if result[:success]
-      render json: result[:book], serializer: BookSerializer, status: :created 
+      render json: result[:book], serializer: BookSerializer, status: :created
     else
       render json: { errors: result[:error] }
     end
   end
 
-  def update 
+  def update
     result = Books::Update.call(params: book_params, id: params[:id])
     if result[:success]
       render json: result[:book], serializer: BookSerializer
@@ -44,7 +45,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :published_in, :publisher_id, :weight, :pages_count, :description, :isbn13, :isbn10, genre_ids: [], author_ids: [])
+    params.require(:book).permit(:title, :published_in, :publisher_id, :weight, :pages_count, :description, :isbn13,
+                                 :isbn10, genre_ids: [], author_ids: [])
   end
-    
 end
