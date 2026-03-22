@@ -8,14 +8,9 @@ class ApplicationController < ActionController::API
   include Handlers::Response
   include Handlers::Exception
 
-  #
-  # If accessing from outside this domain, nullify the session
-  # This allows for outside API access while preventing CSRF attacks,
-  # but you'll have to authenticate your user separately
-  #
-  # protect_from_forgery with: :null_session
-
   before_action :destroy_session!, :ensure_request_format!
+
+  attr_reader :current_user
 
   private
 
@@ -28,5 +23,26 @@ class ApplicationController < ActionController::API
 
     message = I18n.t(:'errors.messages.routes.not_found')
     render_error([{ status: 404, detail: message }], :not_found)
+  end
+
+  def authenticate_user!
+    @current_user = User.find_by(auth_token: bearer_token)
+
+    return if @current_user.present?
+
+    render json: { errors: ['Unauthorized'] }, status: :unauthorized
+  end
+
+  def user_signed_in?
+    current_user.present?
+  end
+
+  def bearer_token
+    authorization_header = request.headers['Authorization'].to_s
+    authentication_scheme, token = authorization_header.split(' ', 2)
+
+    return nil unless authentication_scheme == 'Bearer'
+
+    token
   end
 end
