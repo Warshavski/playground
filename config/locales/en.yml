@@ -38,6 +38,9 @@ en:
       int?: "must be digits"
       date?: "must be YYYY-MM-DD, like 2025-09-22"
       space: "i hate spaces at the ends and the begining, delete them"
+  users:
+    errors: 
+      invalid_token: "Invalid access token" 
   errors:
     messages:
       resources:

@@ -1,19 +1,12 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
     def create
-      build_resource(sign_up_params)
+      result = Users::Registration.call(params: sign_up_params)
 
-      if resource.save
-        render json: {
-          user: {
-            id: resource.id,
-            email: resource.email
-          }
-        }, status: :created
+      if result[:success]
+        render json: result[:user], serializer: UserSerializer, status: :created
       else
-        render json: {
-          errors: resource.errors.full_messages
-        }, status: :unprocessable_entity
+        render json: { errors: result[:error] }, status: :unprocessable_entity
       end
     end
   end
