@@ -41,6 +41,8 @@ en:
   users:
     errors: 
       invalid_token: "Invalid access token" 
+      invalid_email_password: "Invalid email or password"
+      not_found: "User not found"
   errors:
     messages:
       resources:

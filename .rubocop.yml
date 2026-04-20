@@ -21,7 +21,7 @@ Style/AsciiComments:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
-  Enabled: false
+  Enabled: true
 
 AsciiIdentifiers:
   Description: Use only ascii symbols in identifiers.
