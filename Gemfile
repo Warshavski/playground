@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '3.3.2'
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 7.1.5', '>= 7.1.5.2'
+gem 'rails', '~> 7.2.3'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 1.1'
@@ -59,6 +59,8 @@ gem 'rubocop-rspec', require: false
 gem 'rubocop-rake', require: false
 gem 'panolint'
 gem 'concurrent-ruby', '1.3.4'  
+gem "devise"
+gem 'doorkeeper'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -85,8 +87,6 @@ group :development do
   gem 'brakeman'
   gem 'listen', '~> 3.3'
   gem 'pry-rails'
-
-  # Provide a quality report of your Ruby code.
   # https://github.com/whitesmith/rubycritic
   gem 'rubycritic', require: false
 end

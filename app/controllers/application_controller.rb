@@ -17,6 +17,8 @@ class ApplicationController < ActionController::API
 
   before_action :destroy_session!, :ensure_request_format!
 
+  rescue_from Doorkeeper::Errors::InvalidToken, with: :render_invalid_token_error
+
   private
 
   def destroy_session!
@@ -28,5 +30,15 @@ class ApplicationController < ActionController::API
 
     message = I18n.t(:'errors.messages.routes.not_found')
     render_error([{ status: 404, detail: message }], :not_found)
+  end
+
+  def current_user
+    return unless doorkeeper_token
+
+    @current_user ||= User.find_by(id: doorkeeper_token.resource_owner_id)
+  end
+
+  def render_invalid_token_error
+    render json: { errors: ['Invalid access token'] }, status: :unauthorized
   end
 end

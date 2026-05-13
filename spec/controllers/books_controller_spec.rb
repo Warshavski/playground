@@ -1,12 +1,42 @@
 require 'rails_helper'
 
 RSpec.describe "BooksController", type: :request do
+  let(:user) { create(:user) }
+
+  let(:oauth_application) do
+    Doorkeeper::Application.find_or_create_by!(name: "Books API") do |application|
+      application.redirect_uri = "https://dasa.com"
+    end
+  end
+
+  let(:access_token) do
+    Doorkeeper::AccessToken.create!(
+      application_id: oauth_application.id,
+      resource_owner_id: user.id,
+      scopes: "",
+      expires_in: Doorkeeper.configuration.access_token_expires_in.to_i
+    )
+  end
+
+  let(:auth_headers) do
+    {
+      "Accept" => "application/json",
+      "Authorization" => "Bearer #{access_token.token}"
+    }
+  end
+
+  let(:json_headers) do
+    {
+      "Accept" => "application/json"
+    }
+  end
+
   def json_response
     JSON.parse(response.body)
   end
 
   describe "GET /books" do
-    subject { get books_path, headers: { "Accept" => "application/json" } }
+    subject { get books_path, headers: json_headers }
 
     context 'when DB is null' do
       it "returns empty array" do
@@ -30,6 +60,7 @@ RSpec.describe "BooksController", type: :request do
 
         books_array.each_with_index do |book_hash, index|
           book = books[index]
+
           expect(book_hash).to eq(
             {
               'id' => book.id,
@@ -52,13 +83,13 @@ RSpec.describe "BooksController", type: :request do
           )
         end
       end
-    end    
+    end
   end
 
   describe "GET /books/:id" do
     let!(:book) { create(:book) }
-    
-    subject { get book_path(book), headers: { "Accept" => "application/json" } }
+
+    subject { get book_path(book), headers: json_headers }
 
     it "returns a successful response" do
       subject
@@ -82,6 +113,7 @@ RSpec.describe "BooksController", type: :request do
     let!(:publisher) { create(:publisher) }
     let!(:authors) { create_list(:author, 2) }
     let!(:genres) { create_list(:genre, 1) }
+
     let!(:valid_params) do
       {
         book: {
@@ -99,11 +131,12 @@ RSpec.describe "BooksController", type: :request do
       }
     end
 
-    it "create new book" do
-      post books_path, params: valid_params, headers: { "Accept" => "application/json" }
+    it "creates new book" do
+      expect do
+        post books_path, params: valid_params, headers: auth_headers
+      end.to change(Book, :count).by(1)
 
       expect(response).to have_http_status(:created)
-      expect(Book.count).to eq(1)
 
       json = json_response['book'] || json_response
       expect(json['title']).to eq("Sumerki")
@@ -113,7 +146,7 @@ RSpec.describe "BooksController", type: :request do
     end
   end
 
-  describe "PATCH /book/:id" do
+  describe "PATCH /books/:id" do
     let!(:book) { create(:book, title: "first_title") }
 
     let(:update_params) do
@@ -127,7 +160,7 @@ RSpec.describe "BooksController", type: :request do
     subject do
       patch book_path(book),
             params: update_params,
-            headers: { "Accept" => "application/json" }
+            headers: auth_headers
     end
 
     it "updates book and returns success" do
@@ -140,11 +173,11 @@ RSpec.describe "BooksController", type: :request do
     end
   end
 
-    describe "DELETE /books/:id" do
+  describe "DELETE /books/:id" do
     let!(:book) { create(:book) }
 
     subject do
-      delete book_path(book), headers: { "Accept" => "application/json" }
+      delete book_path(book), headers: auth_headers
     end
 
     it "deletes book" do

@@ -20,6 +20,9 @@ Style/AsciiComments:
   Description: Use only ascii symbols in comments.
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: true
+
 AsciiIdentifiers:
   Description: Use only ascii symbols in identifiers.
   Enabled: false
