@@ -5,7 +5,7 @@ Doorkeeper.configure do
   # Check the list of supported ORMs here: https://github.com/doorkeeper-gem/doorkeeper#orms
   orm :active_record
 
-  api_only
+  # api_only
   access_token_expires_in 2.hours
   use_refresh_token
   handle_auth_errors :raise
@@ -28,19 +28,21 @@ Doorkeeper.configure do
   # See: https://guides.rubyonrails.org/active_record_multiple_databases.html#activating-automatic-role-switching
 
   # This block will be called to check whether the resource owner is authenticated or not.
-  resource_owner_authenticator do
-    raise "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
-    # Put your resource owner authentication logic here.
-    # Example implementation:
-    #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
-  end
+  # resource_owner_authenticator do
+  #   raise "Please configure doorkeeper resource_owner_authenticator block located in #{__FILE__}"
+  #   # Put your resource owner authentication logic here.
+  #   # Example implementation:
+  #   #   User.find_by(id: session[:user_id]) || redirect_to(new_user_session_url)
+  # end
 
   # If you didn't skip applications controller from Doorkeeper routes in your application routes.rb
   # file then you need to declare this block in order to restrict access to the web interface for
   # adding oauth authorized applications. In other case it will return 403 Forbidden response
   # every time somebody will try to access the admin web interface.
   #
-  # admin_authenticator do
+  admin_authenticator do |_routes|
+    current_user || warden.authenticate!(scope: :user)
+  end
   #   # Put your admin authentication logic here.
   #   # Example implementation:
   #
