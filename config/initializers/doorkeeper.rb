@@ -5,12 +5,18 @@ Doorkeeper.configure do
   # Check the list of supported ORMs here: https://github.com/doorkeeper-gem/doorkeeper#orms
   orm :active_record
 
-  # api_only
+  base_controller 'WebController'
   access_token_expires_in 2.hours
   use_refresh_token
-  handle_auth_errors :raise
+  grant_flows %w[authorization_code]
+  # handle_auth_errors :raise
   resource_owner_authenticator do
-    current_user || warden.authenticate!(scope: :user)
+    if current_user
+      current_user
+    else
+      store_location_for(:user, request.fullpath)
+      redirect_to(new_user_session_url)
+    end
   end
   # Enable support for multiple database configurations with read replicas.
   # When enabled, Doorkeeper will wrap database write operations to ensure they

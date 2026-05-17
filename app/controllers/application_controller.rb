@@ -22,11 +22,14 @@ class ApplicationController < ActionController::API
   private
 
   def destroy_session!
+    return if doorkeeper_authorization_request?
+
     request.session_options[:skip] = true
   end
 
   def ensure_request_format!
     return if request.format.json?
+    return if doorkeeper_authorization_request?
 
     message = I18n.t(:'errors.messages.routes.not_found')
     render_error([{ status: 404, detail: message }], :not_found)
@@ -40,5 +43,9 @@ class ApplicationController < ActionController::API
 
   def render_invalid_token_error
     render json: { errors: ['Invalid access token'] }, status: :unauthorized
+  end
+
+  def doorkeeper_authorization_request?
+    request.path.start_with?('/oauth', '/users/sign_in', '/users/sign_out')
   end
 end
