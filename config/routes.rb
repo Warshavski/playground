@@ -2,13 +2,12 @@
 
 Rails.application.routes.draw do
   use_doorkeeper
-  devise_for :users, controllers: {
-    registrations: 'users/registrations',
+  devise_for :users, skip: [:registrations], controllers: {
     sessions: 'users/sessions'
   }
 
   devise_scope :user do
-    post '/signup', to: 'users/registrations#create'
+    post '/signup', to: 'users/registrations#create', as: :signup
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

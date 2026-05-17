@@ -10,7 +10,7 @@ RSpec.describe 'Users::RegistrationsController', type: :request do
   describe 'POST /users' do
     context 'when params valid' do
       subject do
-        post user_registration_path,
+        post signup_path,
              params: valid_params,
              headers: { 'Accept' => 'application/json' }
       end
@@ -40,7 +40,7 @@ RSpec.describe 'Users::RegistrationsController', type: :request do
 
     context 'when params invalid' do
       subject do
-        post user_registration_path,
+        post signup_path,
              params: invalid_params,
              headers: { 'Accept' => 'application/json' }
       end
