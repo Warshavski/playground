@@ -2,9 +2,8 @@
 
 Rails.application.routes.draw do
   use_doorkeeper
-  devise_for :users, skip: [:registrations], controllers: {
-    sessions: 'users/sessions'
-  }
+
+  devise_for :users, skip: %i[sessions registrations]
 
   devise_scope :user do
     post '/signup', to: 'users/registrations#create', as: :signup

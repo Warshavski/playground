@@ -5,18 +5,15 @@ Doorkeeper.configure do
   # Check the list of supported ORMs here: https://github.com/doorkeeper-gem/doorkeeper#orms
   orm :active_record
 
-  base_controller 'WebController'
+  api_only
   access_token_expires_in 2.hours
   use_refresh_token
-  grant_flows %w[authorization_code]
-  # handle_auth_errors :raise
-  resource_owner_authenticator do
-    if current_user
-      current_user
-    else
-      store_location_for(:user, request.fullpath)
-      redirect_to(new_user_session_url)
-    end
+  default_scopes :public
+  grant_flows %w[password refresh_token]
+  resource_owner_from_credentials do |_routes|
+    user = User.find_for_database_authentication(email: params[:username])
+
+    user if user&.valid_password?(params[:password])
   end
   # Enable support for multiple database configurations with read replicas.
   # When enabled, Doorkeeper will wrap database write operations to ensure they
@@ -46,9 +43,9 @@ Doorkeeper.configure do
   # adding oauth authorized applications. In other case it will return 403 Forbidden response
   # every time somebody will try to access the admin web interface.
   #
-  admin_authenticator do |_routes|
-    current_user || warden.authenticate!(scope: :user)
-  end
+  # admin_authenticator do |_routes|
+  #   current_user || warden.authenticate!(scope: :user)
+  # end
   #   # Put your admin authentication logic here.
   #   # Example implementation:
   #

@@ -1,6 +1,6 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
-    skip_before_action :verify_authenticity_token, only: :create # временное решение
+    respond_to :json
 
     def create
       result = Users::Registration.call(params: sign_up_params)
