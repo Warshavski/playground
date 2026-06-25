@@ -12,7 +12,7 @@ gem 'rails', '~> 7.2.3'
 gem 'pg', '~> 1.1'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '~> 6.0'
+gem 'puma', '~> 8.0'
 
 # https://github.com/dry-rb/dry-validation
 # Validation library with type-safe schemas and rules https://dry-rb.org/gems/dry-validation
@@ -53,14 +53,14 @@ gem 'rack-cors', '>= 1.0.6', require: 'rack/cors'
 gem 'rack-timeout'
 
 # Static code analyzer and formatter. Keep your code clean.
+gem 'concurrent-ruby', '1.3.7'
+gem 'devise'
+gem 'doorkeeper'
+gem 'panolint'
 gem 'rubocop', '~> 1.61.0', require: false
 gem 'rubocop-rails', require: false
-gem 'rubocop-rspec', require: false
 gem 'rubocop-rake', require: false
-gem 'panolint'
-gem 'concurrent-ruby', '1.3.4'  
-gem "devise"
-gem 'doorkeeper'
+gem 'rubocop-rspec', require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -75,8 +75,8 @@ group :development, :test do
 
   # Shim to load environment variables from .env into ENV in development.
   # https://github.com/bkeepers/dotenv
-  gem 'dotenv-rails'
   gem 'bundler-audit'
+  gem 'dotenv-rails'
 end
 
 group :development do
