@@ -1,5 +1,7 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
+    respond_to :json
+
     def create
       result = Users::Registration.call(params: sign_up_params)
 

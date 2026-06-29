@@ -10,7 +10,8 @@ RSpec.describe BookContract do
         isbn10: '1234567899',
         isbn13: '1234567899999',
         published_in: Date.today,
-        author_ids: [1, 2]
+        author_ids: [1, 2],
+        publisher_id: 1
       }
     end
 
@@ -26,12 +27,13 @@ RSpec.describe BookContract do
         isbn10: '1234567899',
         isbn13: '1234567899999',
         published_in: Date.today,
-        author_ids: [1, 2]
+        author_ids: [1, 2],
+        publisher_id: 1
       }
     end
 
     it 'valid is false, error for title' do
-      expect(contract.errors.to_h).to include({:title=>["cant be blank"]})
+      expect(contract.errors.to_h).to include({ title: ['cant be blank'] })
     end
   end
 
@@ -42,12 +44,13 @@ RSpec.describe BookContract do
         isbn10: 'gggggggggg',
         isbn13: '1234567899999',
         published_in: Date.today,
-        author_ids: [1, 2]
+        author_ids: [1, 2],
+        publisher_id: 1
       }
     end
 
     it 'valid is false, error for isbn10' do
-      expect(contract.errors.to_h).to include({:isbn10=>["must be digits"]})
+      expect(contract.errors.to_h).to include({ isbn10: ['must be digits'] })
     end
   end
 
@@ -58,12 +61,13 @@ RSpec.describe BookContract do
         isbn10: '1234567899',
         isbn13: '1234567899999',
         published_in: 'stringgg',
-        author_ids: [1, 2]
+        author_ids: [1, 2],
+        publisher_id: 1
       }
     end
 
     it 'valid is false, date format error' do
-      expect(contract.errors.to_h).to include({:published_in=>["must be YYYY-MM-DD, like 2025-09-22"]})
+      expect(contract.errors.to_h).to include({ published_in: ['must be YYYY-MM-DD, like 2025-09-22'] })
     end
   end
 
@@ -74,12 +78,13 @@ RSpec.describe BookContract do
         isbn10: '1234567899',
         isbn13: '1234567899999',
         published_in: Date.today,
-        author_ids: []
+        author_ids: [],
+        publisher_id: 1
       }
     end
 
     it 'valid is false, error for author_ids' do
-      expect(contract.errors.to_h).to include({:author_ids=>["cant be blank"]})
+      expect(contract.errors.to_h).to include({ author_ids: ['cant be blank'] })
     end
   end
 
@@ -90,26 +95,30 @@ RSpec.describe BookContract do
         isbn10: '1234567899',
         isbn13: '1234567899999',
         published_in: Date.today,
-        author_ids: [1, 2]
+        author_ids: [1, 2],
+        publisher_id: 1
       }
     end
+
     it 'valid is false, error for title' do
-      expect(contract.errors.to_h).to include({:title=>["i hate spaces at the ends and the begining, delete them"]})
+      expect(contract.errors.to_h).to include({ title: ['i hate spaces at the ends and the begining, delete them'] })
     end
   end
 
-    context 'when title length too short' do
+  context 'when title length too short' do
     let(:params) do
       {
         title: 'm',
         isbn10: '1234567899',
         isbn13: '1234567899999',
         published_in: Date.today,
-        author_ids: [1, 2]
+        author_ids: [1, 2],
+        publisher_id: 1
       }
     end
+
     it 'valid is false, error for title length' do
-      expect(contract.errors.to_h).to include({:title=>["min 2 character"]})
+      expect(contract.errors.to_h).to include({ title: ['min 2 character'] })
     end
   end
 end
