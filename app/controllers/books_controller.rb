@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :doorkeeper_authorize!, only: %i[create update destroy]
+  before_action :doorkeeper_authorize!, only: %i[create update destroy user_books]
 
   def index
     books = Books::Index.call
@@ -12,16 +12,22 @@ class BooksController < ApplicationController
   end
 
   def create
-    result = Books::Create.call(book_params)
+    result = Books::Create.call(params: book_params, user: current_user)
     render_book_result(result, success_status: :created, error_status: :unprocessable_entity)
   end
 
   def update
+    book = Book.find(params[:id])
+    authorize! book, to: :update?
+
     result = Books::Update.call(params: book_params, id: params[:id])
     render_book_result(result, error_status: :unprocessable_entity)
   end
 
   def destroy
+    book = Book.find(params[:id])
+    authorize! book, to: :destroy?
+
     result = Books::Delete.call(id: params[:id])
 
     if result[:success]
@@ -29,6 +35,11 @@ class BooksController < ApplicationController
     else
       render json: { errors: result[:error] }, status: :not_found
     end
+  end
+
+  def user_books
+    books = current_user.books
+    render json: books, each_serializer: BookSerializer
   end
 
   private
