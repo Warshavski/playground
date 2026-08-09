@@ -153,7 +153,7 @@ RSpec.describe 'BooksController', type: :request do
             headers: auth_headers
     end
 
-    let!(:book) { create(:book, title: 'first_title') }
+    let!(:book) { create(:book, user:, title: 'first_title') }
 
     let(:update_params) do
       {
@@ -178,7 +178,7 @@ RSpec.describe 'BooksController', type: :request do
       delete book_path(book), headers: auth_headers
     end
 
-    let!(:book) { create(:book) }
+    let!(:book) { create(:book, user:, title: 'first_title') }
 
     it 'deletes book' do
       expect { subject }.to change(Book, :count).by(-1)
