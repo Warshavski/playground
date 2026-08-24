@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :doorkeeper_authorize!, only: %i[create update destroy user_books]
+  before_action :doorkeeper_authorize!, only: %i[create update destroy]
 
   def index
     books = Books::Index.call
@@ -35,11 +35,6 @@ class BooksController < ApplicationController
     else
       render json: { errors: result[:error] }, status: :not_found
     end
-  end
-
-  def user_books
-    books = current_user.books
-    render json: books, each_serializer: BookSerializer
   end
 
   private

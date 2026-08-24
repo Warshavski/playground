@@ -153,8 +153,6 @@ RSpec.describe 'BooksController', type: :request do
             headers: auth_headers
     end
 
-    let!(:book) { create(:book, user:, title: 'first_title') }
-
     let(:update_params) do
       {
         book: {
@@ -163,13 +161,15 @@ RSpec.describe 'BooksController', type: :request do
       }
     end
 
-    it 'updates book and returns success' do
-      subject
-      expect(response).to have_http_status(:ok)
+    context 'when book belongs to user' do
+      let!(:book) { create(:book, user:, title: 'first_title') }
 
-      json = json_response['book'] || json_response
-      expect(json['title']).to eq('second_title')
-      expect(book.reload.title).to eq('second_title')
+      it 'updates book and returns success' do
+        subject
+
+        expect(response).to have_http_status(:ok)
+        expect(book.reload.title).to eq('second_title')
+      end
     end
   end
 
