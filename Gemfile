@@ -16,6 +16,7 @@ gem 'puma', '~> 8.0'
 
 # https://github.com/dry-rb/dry-validation
 # Validation library with type-safe schemas and rules https://dry-rb.org/gems/dry-validation
+gem 'action_policy'
 gem 'dry-validation'
 
 # A fast JSON parser and Object marshaller as a Ruby gem.
