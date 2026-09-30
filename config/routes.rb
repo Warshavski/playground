@@ -19,4 +19,14 @@ Rails.application.routes.draw do
     end
   end
   resources :users, only: %i[index show destroy update]
+
+  namespace :users do
+    resources :books, only: :index
+  end
+
+  resources :imports, only: :create do
+    collection do
+      post :upload
+    end
+  end
 end

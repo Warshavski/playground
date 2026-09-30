@@ -32,11 +32,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def books
-    books = Users::Books.call(user: current_user)
-    render json: books, each_serializer: BookSerializer
-  end
-
   private
 
   def user_params
