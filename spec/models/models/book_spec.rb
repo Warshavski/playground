@@ -4,6 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Book, type: :model do
   subject(:book) { described_class.new(params) }
+
   let(:params) { {} }
 
   describe 'validations' do
@@ -14,7 +15,8 @@ RSpec.describe Book, type: :model do
           weight: 500,
           pages_count: 1225,
           published_in: Date.parse('01-01-1869'),
-          publisher: Publisher.new(name: 'Издательство 1')
+          publisher: Publisher.new(name: 'Издательство 1'),
+          user: User.new(email: 'test@test.com', password: 'password123')
         }
       end
 
