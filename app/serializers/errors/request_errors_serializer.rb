@@ -33,6 +33,12 @@ module Errors
       { code: opts[:status_code], message:, path: ['server'] }
     end
 
+    resolver :forbidden do |_, opts|
+      message = I18n.t('errors.messages.requests.forbidden')
+
+      { code: opts[:status_code], message:, path: ['authorization'] }
+    end
+
     def initialize(error, type)
       @error = error
       @type = type

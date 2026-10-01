@@ -21,6 +21,12 @@ module Handlers
         handle_error(e, :not_found, status: :not_found)
       end
 
+      # Return 403 - Forbidden
+      #
+      rescue_from ActionPolicy::Unauthorized do |e|
+        handle_error(e, :forbidden, status: :forbidden)
+      end
+
       # TODO : setup Rack timeout gem
       #
       # Return 408 - Request Timeout

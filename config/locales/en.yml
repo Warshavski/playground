@@ -53,3 +53,4 @@ en:
         internal_server_error: '(ノಠ益ಠ)ノ彡┻━┻'
         request_timeout: '┑(ツ)┍'
         throttled: 'ಠ_ಠ Too many requests. Please, try again later.'
+        forbidden: 'вы не авторизованы/нет прав'
