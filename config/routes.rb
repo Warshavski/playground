@@ -13,6 +13,20 @@ Rails.application.routes.draw do
   # @see AboutController
   root to: 'about#show', defaults: { format: 'json' }
   resources :genres, only: %i[index show]
-  resources :books, only: %i[index show create update destroy]
+  resources :books, only: %i[index show create update destroy] do
+    collection do
+      get :user_books
+    end
+  end
   resources :users, only: %i[index show destroy update]
+
+  namespace :users do
+    resources :books, only: :index
+  end
+
+  resources :imports, only: :create do
+    collection do
+      post :upload
+    end
+  end
 end

@@ -12,16 +12,22 @@ class BooksController < ApplicationController
   end
 
   def create
-    result = Books::Create.call(book_params)
+    result = Books::Create.call(params: book_params, user: current_user)
     render_book_result(result, success_status: :created, error_status: :unprocessable_entity)
   end
 
   def update
+    book = Book.find(params[:id])
+    authorize! book, to: :update?
+
     result = Books::Update.call(params: book_params, id: params[:id])
     render_book_result(result, error_status: :unprocessable_entity)
   end
 
   def destroy
+    book = Book.find(params[:id])
+    authorize! book, to: :destroy?
+
     result = Books::Delete.call(id: params[:id])
 
     if result[:success]

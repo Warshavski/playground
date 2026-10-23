@@ -7,6 +7,8 @@
 class ApplicationController < ActionController::API
   include Handlers::Response
   include Handlers::Exception
+  include ActionPolicy::Controller
+  authorize :user, through: :current_user
 
   #
   # If accessing from outside this domain, nullify the session
