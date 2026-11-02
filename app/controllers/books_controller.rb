@@ -37,6 +37,35 @@ class BooksController < ApplicationController
     end
   end
 
+  def submit_for_review
+    book = Book.find(params[:id])
+    book.submit_for_review!
+
+    render json: book, serializer: BookSerializer
+  end
+
+  def publish
+    book = Book.find(params[:id])
+    book.publish!
+
+    render json: book, serializer: BookSerializer
+  end
+
+  def reject
+    book = Book.find(params[:id])
+    book.reject!
+
+    render json: book, serializer: BookSerializer
+  end
+
+  def revise
+    book = Book.find(params[:id])
+    book.revise!
+
+    render json: book, serializer: BookSerializer
+  end
+
+  
   private
 
   def render_book_result(result, success_status: :ok, error_status: :unprocessable_entity)
