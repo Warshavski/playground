@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (6.0.0)
+      concurrent-ruby (~> 1.0)
     action_policy (0.7.6)
       ruby-next-core (>= 1.0)
     actioncable (7.2.3.2)
@@ -518,6 +520,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
+  aasm
   action_policy
   active_model_serializers (~> 0.10.0)
   bootsnap

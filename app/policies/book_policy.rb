@@ -9,6 +9,22 @@ class BookPolicy < ApplicationPolicy # rubocop:disable Style/Documentation
     owner? || user.moderator? || user.admin?
   end
 
+  def submit_for_review?
+    owner? || user.admin?
+  end
+
+  def publish?
+    user.moderator? || user.admin?
+  end
+
+  def reject?
+    user.moderator? || user.admin?
+  end
+
+  def revise?
+    owner? || user.admin?
+  end
+
   private
 
   def owner?

@@ -48,4 +48,34 @@ RSpec.describe Book, type: :model do
     it { is_expected.to have_and_belong_to_many(:authors) }
     it { is_expected.to have_and_belong_to_many(:genres) }
   end
+
+  describe 'state'do
+    context 'when book is created' do
+      it 'has draft state' do
+        expect(book.state).to eq('draft')
+      end
+    end
+
+    context 'when book ready submit for review' do
+      it 'changes state from draft to pending_review' do
+        expect(book.submit_for_review).to be(true)
+        expect(book.state).to eq('pending_review')
+      end
+    end
+
+    context 'when book has draft state' do
+      it 'cannot publishing' do
+        expect(book.may_publish?).to be(false)
+        expect { book.publish }.to raise_error(AASM::InvalidTransition)
+      end
+    end
+
+    context 'when book is pending review' do
+      it 'can be published' do
+        expect(book.submit_for_review).to be(true)
+        expect(book.state).to eq('pending_review')
+        expect(book.publish).to be(true)
+      end
+    end
+  end
 end
